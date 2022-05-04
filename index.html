@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Happy Hour</title>
+        <meta name="description" content="An interactive getting started guide for Brackets.">
+        <link rel="stylesheet" href="style.css">
+        <script src="code.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    </head>
+    
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <h1>Happy Hour</h1>
+        <h2> A service to visualise drinking.</h2>
+        <h3>
+        <nav>
+        <ul>
+            <button onclick="AccountFunction()">Guidelines</button> 
+            <button onclick="DTFunction()">Drink Behaviour</button>
+        </ul>
+        </nav>
+        </h3>
+        <div id ="AccountDIV" style="display:none;">
+            <h4> Guidelines and info</h4>
+            <p>Happy Hour is a service that will help you visualise drinking buy using HUE lights to display if your habbits are healthy or not.
+            <br>    
+                <br>Each light will display a diffrent piece of information:
+                <br> Light 4 reprisents time spent drinking.
+                <br> Light 5 reprisents money spent on drinks.
+                <br> Light 6 reprisents total drinks consumed.
+            <br>
+                <br> Each light can turn one of 4 colours, 
+                <br>Red - Bad drinking behaviour. 
+                <br>Yellow - Ok behaviour. 
+                <br>Green - Good Drinking Behaviour.
+            </p>
+        </div>
+        <div id ="DTDIV" style="display:none;">
+            <h4> Drink Behaviour</h4>
+            <p>Current Date:
+                <script> document.write(new Date().toLocaleDateString()); </script>
+                <br>Below fill in the fields for your drinking behaviour to be stored and displayed onto the lights
+                <br>Time Spent, Dipslayed on Light 4
+                <br>Money Spent, Displayed on Light 5
+                <br>Total Drinks, Displayed on Light 6
+            </p>
+            <form id="myForm">
+            <div class="form-row">
+              <label for="Date">Date:</label><br />
+              <input type="text" name="Date" id="Date" class="form-input-field" placeholder="DD/MM/YY" >
+            </div>
+            <div class="form-row">
+              <label for="MostFreq">Most Frequent Drink:</label><br />
+              <input type="text" name="MostFreq" id="MostFreq" class="form-input-field" placeholder="Double Vodka Coke" >
+            </div>
+            <div class="form-row">
+              <label for="TimeSpent">Time Spent Drinking: (Hours)</label><br />
+              <input type="number" name="TimeSpent" id="TimeSpent" class="form-input-field" placeholder="Time in Hours" >
+            </div>
+            <div class="form-row">
+              <label for="MoneySpent">Money Spent: (GBP)</label><br />
+              <input type="number" name="MoneySpent" id="MoneySpent" class="form-input-field" placeholder="10.80" >
+            </div>
+            <div class="form-row">
+              <label for="TotDrinks">Total Drinks:</label><br />
+              <input type="number" name="TotDrinks" id="TotDrinks" class="form-input-field" placeholder="4" >
+            </div>
+            <div class="form-row">
+                <button onclick="store(), RunLightDisplay()" type="button">Store Data</button>
+                <!--
+                <button onclick="ButtonPressRed()" type="button">Light TestRed</button>
+                <button onclick="LightRed5()" type="button">LightRed5</button>
+                <button onclick="LightRed4()" type="button">LLightRed4</button>
+                <button onclick="ButtonPressYellow()" type="button">Light TestYellow</button>
+                <button onclick="ButtonPressGreen()" type="button">Light TestGreen</button> -->
+                <script  type="text/javascript">
+                    function store(){
+                        var InfoDate= document.getElementById("Date").value;
+                        var MFreq= document.getElementById("MostFreq").value;
+                        var TSpent= document.getElementById("TimeSpent").value; //Light 4
+                        var MSpent= document.getElementById("MoneySpent").value; //Light 5
+                        var TotDrink= document.getElementById("TotDrinks").value; //Light 6
+                        localStorage.setItem("InfoDate", InfoDate .value);
+                        localStorage.setItem("MostFreq", MostFreq .value);
+                        localStorage.setItem("TimeSpent", TimeSpent .value);
+                        localStorage.setItem("MoneySpent", MoneySpent .value);
+                        localStorage.setItem("TotDrinks", TotDrinks .value);
+                        const data = {
+                            "Day": InfoDate,
+                            "Most Frequent": MFreq,
+                            "TimeSpent": TSpent,
+                            "MoneySpent": MSpent,
+                            "TotDrinks": TotDrink
+                            }
+                        localStorage.setItem("Data", JSON.stringify(data));
+                    }
+                </script>
+        </div>
+        <div id ="ContactDIV" style="display:none">
+            <h4> Contact </h4>
+            <p> Contact</p>
+        </div>
+        <div id ="AboutDIV" style="display:none;">
+            <h4> About</h4>
+            <p> About us</p>
+        </div>
+        <script>
+            function RunLightDisplay(){
+                TimeSpentLight()
+                MoneySpentLight()
+                TotalDrinksLight()
+            }
+            function TimeSpentLight(){
+                var tempDat = localStorage.getItem("TimeSpent");
+                if (tempDat < 2){
+                    LightGreen4();
+                }
+                else if (tempDat > 5){
+                    LightRed4();
+                }
+                else{
+                    LightYellow4();
+                }    
+            }
+            function MoneySpentLight(){
+                var tempDat2 = localStorage.getItem("MoneySpent");
+                if (tempDat2 < 15){
+                    LightGreen5();
+                }
+                else if (tempDat2 > 35){
+                    LightRed5();
+                }
+                else{
+                    LightYellow5();
+                }    
+            }
+            function TotalDrinksLight(){
+                var tempDat3 = localStorage.getItem("TotDrinks");
+                if (tempDat3 < 8){
+                    ButtonPressGreen();
+                }
+                else if (tempDat3 > 15){
+                    ButtonPressRed();
+                }
+                else{
+                    ButtonPressYellow();
+                }    
+            }
+            function ButtonPressRed(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/6/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.72,0.27]}';  // red light
+
+                xhr.send(data);
+            }
+            function LightRed5(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/5/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.72,0.27]}';  // red light
+
+                xhr.send(data);
+            }
+            function LightRed4(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/4/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.72,0.27]}';  // red light
+
+                xhr.send(data);
+            }
+            function ButtonPressGreen(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/6/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.15,0.75]}';  // green
+
+                xhr.send(data);
+            }
+            function LightGreen5(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/5/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.15,0.75]}';  // green
+
+                xhr.send(data);
+            }
+            function LightGreen4(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/4/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.15,0.75]}';  // green
+
+                xhr.send(data);
+            }
+            function ButtonPressYellow(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/6/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.4091,0.518]}';  // yellow
+
+                xhr.send(data);
+            }
+            function LightYellow5(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/5/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.4091,0.518]}';  // yellow
+
+                xhr.send(data);
+            }
+            function LightYellow4(){    
+                var url = "http://10.208.61.74:5050/api/stlaB2I6VZ8O80Qepc-1xfmLrHgyTFvB9IGupaQz/lights/4/state";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Content-Length", "0");
+
+                xhr.onreadystatechange = function () {
+                   if (xhr.readyState === 4) {
+                      console.log(xhr.status);
+                      console.log(xhr.responseText);
+                   }};
+
+                var data = '{"on": true, "bri":245, "xy" : [0.4091,0.518]}';  // yellow
+
+
+                xhr.send(data);
+            }
+        </script>
+    </body>
+</html> 
